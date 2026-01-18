@@ -163,7 +163,7 @@ const systemInstruction = `
                 💡 Improvements:
                 	•	✔ Handles async correctly using async/await.
                 	•	✔ Error handling added to manage failed requests.
-                •	✔ Returns null instead of breaking execution.
+                	•	✔ Returns null instead of breaking execution.
 
                 Final Note:
 
@@ -175,7 +175,7 @@ const systemInstruction = `
 async function generateContent(prompt) {
     try {
         const result = await groq.chat.completions.create({
-            model: "llama-3.1-8b-instant", // best free Groq model
+            model: "llama-3.1-8b-instant",
             messages: [
                 { role: "system", content: systemInstruction },
                 { role: "user", content: prompt }
@@ -184,12 +184,25 @@ async function generateContent(prompt) {
         });
 
         const text = result.choices[0].message.content;
-
         console.log(text);
         return text;
 
     } catch (error) {
+        const message = error?.message?.toLowerCase() || "";
+
         console.error("Groq API Error:", error.message);
+
+        // Detect rate limit / quota exhaustion
+        if (
+            error?.status === 429 ||
+            message.includes("rate") ||
+            message.includes("limit") ||
+            message.includes("quota") ||
+            message.includes("too many")
+        ) {
+            return "⚠️ Free API limit reached. Please try again later.";
+        }
+
         return "❌ AI service failed. Please try again later.";
     }
 }
