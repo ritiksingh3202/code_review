@@ -1,4 +1,4 @@
-import groq from 'groq-sdk';
+import { Groq } from 'groq-sdk';
 
 const systemInstruction = `
 You are an expert code reviewer with 7+ years of development experience.
@@ -6,7 +6,7 @@ Focus on: code quality, best practices, efficiency, error detection, scalability
 Provide concise, constructive feedback with code examples when needed.
 `;
 
-const groqClient = new groq({
+const groqClient = new Groq({
   apiKey: process.env.GROQ_API_KEY,
 });
 
