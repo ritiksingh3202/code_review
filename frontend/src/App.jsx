@@ -23,9 +23,23 @@ function App() {
 
   async function reviewCode() {
     setError(null)
+    setReview('')
     try {
       const response = await axios.post('/api/ai/get-review', { code })
-      let reviewText = response.data
+      console.log('API Response:', response.data)
+
+      let reviewText = ''
+
+      // Handle different response formats
+      if (response.data?.review) {
+        reviewText = response.data.review
+      } else if (typeof response.data === 'string') {
+        reviewText = response.data
+      } else if (response.data?.message) {
+        reviewText = response.data.message
+      } else {
+        reviewText = response.data
+      }
 
       // Filter out known AI model error lines
       if (typeof reviewText === 'string') {
@@ -41,11 +55,12 @@ function App() {
         setReview(reviewText)
       }
     } catch (err) {
-      let errorMsg = err.response?.data || err.message
+      console.error('Review error:', err)
+      let errorMsg = err.response?.data?.error || err.response?.data || err.message
       if (typeof errorMsg === 'string' && (errorMsg.includes('Cannot read') || errorMsg.includes('model does not support image input'))) {
         errorMsg = "The AI model does not support image input. Please remove any image references."
       }
-      setError(errorMsg)
+      setError(errorMsg || 'An unknown error occurred')
     }
   }
 
