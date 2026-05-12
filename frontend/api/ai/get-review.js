@@ -1,4 +1,4 @@
-const groq = require('groq-sdk');
+import groq from 'groq-sdk';
 
 const systemInstruction = `
 You are an expert code reviewer with 7+ years of development experience.
