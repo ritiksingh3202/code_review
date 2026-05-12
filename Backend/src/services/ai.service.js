@@ -203,6 +203,16 @@ async function generateContent(prompt) {
             return "⚠️ Free API limit reached. Please try again later.";
         }
 
+        // Detect image/vision-related errors
+        if (
+            message.includes("image") ||
+            message.includes("does not support") ||
+            message.includes("unsupported") ||
+            message.includes("multimodal")
+        ) {
+            return "⚠️ This AI model does not support image input. Please remove any image references from your code.";
+        }
+
         return "❌ AI service failed. Please try again later.";
     }
 }

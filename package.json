@@ -1,0 +1,16 @@
+{
+  "name": "code-review",
+  "version": "1.0.0",
+  "description": "Code Review SaaS application with React frontend and Express backend",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix frontend\" \"npm run dev --prefix Backend\"",
+    "install:all": "npm install && npm install --prefix frontend && npm install --prefix Backend",
+    "build": "npm run build --prefix frontend",
+    "start": "npm run start --prefix Backend",
+    "lint": "npm run lint --prefix frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}
