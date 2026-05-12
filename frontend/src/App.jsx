@@ -24,7 +24,7 @@ function App() {
   async function reviewCode() {
     setError(null)
     try {
-      const response = await axios.post('http://localhost:3000/ai/get-review', { code })
+      const response = await axios.post('/api/ai/get-review', { code })
       let reviewText = response.data
 
       // Filter out known AI model error lines
